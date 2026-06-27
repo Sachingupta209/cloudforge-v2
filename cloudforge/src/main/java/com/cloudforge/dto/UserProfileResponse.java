@@ -1,0 +1,20 @@
+package com.cloudforge.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class UserProfileResponse {
+
+    private Long id;
+
+    private String fullName;
+
+    private String email;
+
+    private String role;
+
+}
