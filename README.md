@@ -67,20 +67,20 @@ CloudForge demonstrates modern backend development, secure authentication with J
 
 # ✨ Features
 
-- 🔐 Secure JWT Authentication
-- 👤 User Registration & Login
-- 📂 Dockerfile Upload
-- 🛡️ Dockerfile Security Analysis
-- 📊 Security Score & Grade Generation
-- ⚠️ Security Warnings & Recommendations
-- 📄 Professional PDF Report Generation
-- 🕘 Analysis History Management
-- 🗑️ Delete Previous Analyses
-- 🐘 PostgreSQL Database Integration
-- 🐳 Dockerized Multi-Container Deployment
-- 🌐 Nginx Reverse Proxy
-- ☁️ AWS EC2 Cloud Deployment
-- ⚙️ Environment Variable Configuration using `.env`
+-  Secure JWT Authentication
+-  User Registration & Login
+-  Dockerfile Upload
+-  Dockerfile Security Analysis
+-  Security Score & Grade Generation
+-  Security Warnings & Recommendations
+-  Professional PDF Report Generation
+-  Analysis History Management
+-  Delete Previous Analyses
+-  PostgreSQL Database Integration
+-  Dockerized Multi-Container Deployment
+-  Nginx Reverse Proxy
+-  AWS EC2 Cloud Deployment
+-  Environment Variable Configuration using `.env`
 
 ---
 
