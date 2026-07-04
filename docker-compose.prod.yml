@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cloudforge-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - cloudforge-network
+
+
+  backend:
+    image: ghcr.io/sachingupta209/cloudforge-backend:latest
+    container_name: cloudforge-backend
+
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+
+    ports:
+      - "8081:8081"
+
+    networks:
+      - cloudforge-network
+
+
+  frontend:
+    image: ghcr.io/sachingupta209/cloudforge-frontend:latest
+    container_name: cloudforge-frontend
+
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "80:80"
+
+    networks:
+      - cloudforge-network
+
+
+volumes:
+  postgres_data:
+
+
+networks:
+  cloudforge-network:
+    driver: bridge

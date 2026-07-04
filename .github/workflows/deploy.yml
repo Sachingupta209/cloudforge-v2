@@ -58,3 +58,44 @@ jobs:
 
       - name: Build Frontend
         run: npm run build
+  deploy:
+    name: Deploy to AWS EC2
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-backend
+      - build-frontend
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+
+          script: |
+            set -e
+
+            echo "Moving to project directory..."
+            cd /home/ubuntu/cloudforge-v2
+
+            echo "Pulling latest code..."
+            git pull origin main
+
+            echo "Stopping existing containers..."
+            docker compose down
+
+            echo "Building and starting containers..."
+            docker compose up -d --build
+
+            echo "Removing unused Docker images..."
+            docker image prune -f
+
+            echo "Deployment completed successfully."
